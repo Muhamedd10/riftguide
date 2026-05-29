@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RiftGuide — LoL Draft & Oyun Rehberi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════════ */
+:root {
+  --gold: #C89B3C;
+  --gold-light: #F0D878;
+  --gold-dark: #7A5C1E;
+  --blue: #0BC4E3;
+  --blue-dark: #065F6E;
+  --red: #C8393C;
+  --red-dark: #7A1F20;
+  --bg: #02080F;
+  --bg2: #040E1A;
+  --panel: #071828;
+  --panel2: #0A1F33;
+  --panel3: #0D2640;
+  --border: #132035;
+  --border2: #1A3050;
+  --text: #8BAABB;
+  --text2: #4A6A7A;
+  --green: #00C853;
+  --font-display: 'Cinzel', serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* BACKGROUND */
+.bg-layer {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 140% 70% at 50% -10%, rgba(200,155,60,.06) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at -5% 70%, rgba(11,196,227,.035) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 105% 80%, rgba(200,57,60,.025) 0%, transparent 50%);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.008'%3E%3Cpath d='M20 20.5V18H0v5h5v5H0v5h20v-9.5zm-2 4.5H9v-3h9v3zm11-2h4v3h-4v5H14v-5h5v-3h5v-5h5v5zM30 0H14v10h2V3h12v5h2V0z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.app { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.header {
+  text-align: center;
+  padding: 44px 20px 36px;
+  position: relative;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(600px, 90vw); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,155,60,.5), transparent);
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 7vw, 52px);
+  font-weight: 900;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 80px rgba(200,155,60,.4), 0 0 160px rgba(200,155,60,.15);
+  margin-bottom: 8px;
+}
+.logo em { color: #fff; font-style: normal; }
+.tagline {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+/* ═══════════════════════════════════════════
+   STEP NAV
+═══════════════════════════════════════════ */
+.step-nav {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px 20px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  gap: 0;
+}
+.step-item { display: flex; align-items: center; flex: 1; }
+.step-btn {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; cursor: pointer; flex-shrink: 0;
+  background: none; border: none;
+}
+.step-circle {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--panel);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 700;
+  color: var(--text2);
+  transition: all .3s;
+}
+.step-lbl {
+  font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text2);
+  transition: color .3s;
+}
+.step-line {
+  flex: 1; height: 1px;
+  background: var(--border);
+  margin: 0 8px 22px;
+  transition: background .3s;
+}
+.step-item.active .step-circle { border-color: var(--gold); background: rgba(200,155,60,.12); color: var(--gold); box-shadow: 0 0 24px rgba(200,155,60,.25); }
+.step-item.active .step-lbl { color: var(--gold); }
+.step-item.done .step-circle { border-color: var(--green); background: rgba(0,200,83,.1); color: var(--green); }
+.step-item.done .step-lbl { color: var(--green); }
+.step-item.done + .step-item .step-line { background: rgba(0,200,83,.3); }
+
+/* ═══════════════════════════════════════════
+   PAGES
+═══════════════════════════════════════════ */
+.page { display: none; max-width: 960px; margin: 0 auto; padding: 8px 16px 80px; animation: fadeUp .35s ease; }
+.page.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* ═══════════════════════════════════════════
+   PAGE 1 — PROFILE
+═══════════════════════════════════════════ */
+.page-title { text-align: center; margin-bottom: 32px; }
+.page-title h2 { font-family: var(--font-display); font-size: clamp(16px,3vw,22px); color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 6px; }
+.page-title p { font-size: 13px; color: var(--text2); }
+
+.role-grid {
+  display: flex; justify-content: center;
+  gap: 10px; flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.role-btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+  min-width: 80px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.role-btn:hover { border-color: rgba(200,155,60,.3); transform: translateY(-2px); background: var(--panel2); }
+.role-btn.sel { border-color: var(--gold); background: rgba(200,155,60,.1); box-shadow: 0 0 24px rgba(200,155,60,.2); }
+.role-emoji { font-size: 26px; line-height: 1; }
+.role-lbl { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text2); transition: color .2s; }
+.role-btn.sel .role-lbl { color: var(--gold); }
+
+.section-lbl {
+  font-family: var(--font-display);
+  font-size: 10px; letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold); opacity: .7;
+  text-align: center; margin-bottom: 16px;
+}
+
+.mains-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  max-width: 560px;
+  margin: 0 auto 32px;
+}
+.main-slot {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  aspect-ratio: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 6px; cursor: pointer;
+  transition: all .2s;
+  position: relative; overflow: hidden;
+}
+.main-slot:hover { border-color: rgba(200,155,60,.3); background: var(--panel2); }
+.main-slot.filled { border-color: rgba(200,155,60,.4); background: rgba(200,155,60,.06); }
+.main-slot .slot-n {
+  position: absolute; top: 5px; left: 7px;
+  font-family: var(--font-mono); font-size: 9px;
+  color: var(--text2); opacity: .6;
+}
+.main-slot .champ-img {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(200,155,60,.3);
+}
+.main-slot .champ-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  color: rgba(255,255,255,.85);
+  border: 2px solid rgba(200,155,60,.3);
+  flex-shrink: 0;
+}
+.main-slot .champ-name-s {
+  font-size: 10px; font-weight: 600;
+  color: #fff; text-align: center;
+  max-width: 70px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+  padding: 0 4px;
+}
+.main-slot .add-plus { font-size: 22px; color: var(--text2); opacity: .3; }
+.main-slot .clr-btn {
+  position: absolute; top: 4px; right: 4px;
+  width: 16px; height: 16px;
+  background: rgba(200,57,60,.4);
+  border-radius: 50%;
+  display: none; align-items: center; justify-content: center;
+  font-size: 8px; color: var(--red); cursor: pointer;
+  transition: background .2s;
+}
+.main-slot .clr-btn:hover { background: rgba(200,57,60,.7); }
+.main-slot.filled .clr-btn { display: flex; }
+
+.primary-btn {
+  display: block;
+  width: 100%; max-width: 260px;
+  margin: 0 auto;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  border: none; border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: #000; cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 24px rgba(200,155,60,.3);
+}
+.primary-btn:hover { box-shadow: 0 6px 32px rgba(200,155,60,.5); transform: translateY(-2px); }
+.primary-btn:disabled { opacity: .3; cursor: not-allowed; transform: none; box-shadow: none; }
+.role-svg { width: 30px; height: 30px; display: block; margin: 0 auto 4px; filter: invert(50%) sepia(10%) saturate(500%) hue-rotate(180deg); transition: filter .2s; }
+.role-btn.sel .role-svg { filter: invert(72%) sepia(50%) saturate(500%) hue-rotate(5deg) brightness(1.1); }
+.role-btn:hover .role-svg { filter: invert(60%) sepia(20%) saturate(600%) hue-rotate(180deg); }
+
+/* ═══════════════════════════════════════════
+   PAGE 2 — DRAFT
+═══════════════════════════════════════════ */
+.draft-hdr { text-align: center; margin-bottom: 24px; }
+.draft-hdr h2 { font-family: var(--font-display); font-size: clamp(14px,3vw,19px); color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 5px; }
+.draft-hdr p { font-size: 12px; color: var(--text2); }
+
+.phase-info {
+  display: none;
+  align-items: center; gap: 10px;
+  background: rgba(11,196,227,.07);
+  border: 1px solid rgba(11,196,227,.18);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  font-size: 12px; color: var(--blue);
+}
+.phase-info.visible { display: flex; }
+.phase-info b { color: #fff; }
+
+.draft-grid {
+  display: grid;
+  grid-template-columns: 1fr 50px 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.team-box {
+  background: var(--panel);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.team-box-hdr {
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px;
+}
+.blue-box .team-box-hdr { background: linear-gradient(90deg, rgba(11,196,227,.15), transparent); color: var(--blue); border-bottom: 1px solid rgba(11,196,227,.12); }
+.red-box .team-box-hdr { background: linear-gradient(90deg, transparent, rgba(200,57,60,.15)); color: var(--red); border-bottom: 1px solid rgba(200,57,60,.12); flex-direction: row-reverse; }
+
+.slots-wrap { padding: 8px; display: flex; flex-direction: column; gap: 5px; }
+
+.dslot {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--panel2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 6px 9px; cursor: pointer;
+  transition: all .2s; min-height: 46px;
+}
+.dslot:hover { border-color: rgba(200,155,60,.25); background: var(--panel3); }
+.dslot.filled { border-color: rgba(200,155,60,.25); }
+.dslot.mine-hl { border-color: rgba(11,196,227,.3) !important; background: rgba(11,196,227,.06) !important; }
+.dslot.mine-sel { border-color: var(--gold) !important; background: rgba(200,155,60,.1) !important; box-shadow: 0 0 14px rgba(200,155,60,.2); }
+.red-box .dslot { flex-direction: row-reverse; }
+
+.dslot-role { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+.dslot-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(200,155,60,.2); flex-shrink: 0; }
+.dslot-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 10px; font-weight: 700; color: rgba(255,255,255,.8); flex-shrink: 0; }
+.dslot-name { flex: 1; font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dslot-ph { color: var(--text2); opacity: .35; font-size: 11px; }
+.dslot-clr { width: 14px; height: 14px; background: rgba(200,57,60,.3); border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 7px; color: var(--red); flex-shrink: 0; cursor: pointer; }
+.dslot-clr:hover { background: rgba(200,57,60,.6); }
+.dslot.filled .dslot-clr { display: flex; }
+
+.vs-mid { display: flex; align-items: center; justify-content: center; padding-top: 46px; }
+.vs-txt { font-family: var(--font-display); font-size: 16px; font-weight: 900; color: var(--gold); opacity: .25; }
+
+.btn-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 22px; flex-wrap: wrap; }
+.gbtn {
+  padding: 12px 26px;
+  border: none; border-radius: 7px;
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: all .2s;
+}
+.gbtn-gold { background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark)); color: #000; box-shadow: 0 4px 20px rgba(200,155,60,.3); }
+.gbtn-gold:hover { box-shadow: 0 6px 28px rgba(200,155,60,.5); transform: translateY(-2px); }
+.gbtn-blue { background: rgba(11,196,227,.12); color: var(--blue); border: 1px solid rgba(11,196,227,.3); }
+.gbtn-blue:hover { background: rgba(11,196,227,.2); }
+.gbtn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+.gbtn-ghost:hover { color: #fff; border-color: rgba(200,155,60,.3); }
+
+/* PICK RECO */
+.pick-reco { background: var(--panel); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; display: none; animation: fadeUp .35s ease; margin-bottom: 20px; }
+.pick-reco.visible { display: block; }
+.pr-hdr { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.pr-title { font-family: var(--font-display); font-size: 10px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+.pr-sub { font-size: 11px; color: var(--text2); }
+.pick-row { display: flex; gap: 10px; padding: 12px; overflow-x: auto; padding-bottom: 14px; }
+.pick-row::-webkit-scrollbar { height: 3px; }
+.pick-row::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.pcard {
+  flex-shrink: 0; width: 140px;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all .25s;
+  text-align: center;
+  position: relative;
+}
+.pcard:hover { transform: translateY(-4px); border-color: rgba(200,155,60,.3); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.pcard.r1 { border-color: rgba(200,155,60,.4); background: rgba(200,155,60,.07); }
+.pcard.r2 { border-color: rgba(192,192,192,.2); }
+.pcard.r3 { border-color: rgba(176,140,100,.18); }
+.pcard.chosen { border-color: var(--blue) !important; background: rgba(11,196,227,.1) !important; box-shadow: 0 0 20px rgba(11,196,227,.2); }
+
+.pcard-rank { position: absolute; top: 8px; left: 10px; font-family: var(--font-display); font-size: 11px; font-weight: 700; }
+.r1 .pcard-rank { color: var(--gold); }
+.r2 .pcard-rank { color: #C0C0C0; }
+.r3 .pcard-rank { color: #B08C64; }
+.pcard:nth-child(n+4) .pcard-rank { color: var(--text2); opacity: .5; }
+
+.pcard-badge { position: absolute; top: 8px; right: 8px; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: .5px; }
+.bs { background: rgba(200,155,60,.2); color: var(--gold); border: 1px solid rgba(200,155,60,.4); }
+.ba { background: rgba(11,196,227,.15); color: var(--blue); border: 1px solid rgba(11,196,227,.3); }
+.bb { background: rgba(76,175,80,.15); color: #4CAF50; border: 1px solid rgba(76,175,80,.3); }
+.bc { background: rgba(158,158,158,.1); color: #9E9E9E; border: 1px solid rgba(158,158,158,.2); }
+
+.pcard-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; margin: 18px auto 8px; border: 2px solid rgba(200,155,60,.3); display: block; }
+.pcard-avatar { width: 56px; height: 56px; border-radius: 50%; margin: 18px auto 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 16px; font-weight: 700; color: rgba(255,255,255,.85); border: 2px solid rgba(200,155,60,.3); }
+.pcard-name { font-family: var(--font-display); font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+.pcard-reason { font-size: 10px; color: var(--text2); line-height: 1.4; }
+.pcard-cta { margin-top: 8px; font-size: 9px; color: var(--blue); letter-spacing: .5px; }
+.pr-hint { text-align: center; font-size: 11px; color: var(--text2); opacity: .4; padding: 0 12px 12px; letter-spacing: 1px; }
+
+/* ═══════════════════════════════════════════
+   PAGE 3 — GUIDE
+═══════════════════════════════════════════ */
+.back-btn { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 1px solid var(--border); border-radius: 7px; padding: 8px 16px; font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text2); cursor: pointer; transition: all .2s; margin-bottom: 24px; }
+.back-btn:hover { color: #fff; border-color: rgba(200,155,60,.3); }
+
+.guide-hero {
+  background: var(--panel);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 24px;
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 20px;
+  position: relative; overflow: hidden;
+}
+.guide-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,155,60,.07) 0%, transparent 55%); pointer-events: none; }
+.hero-portrait { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(200,155,60,.4); box-shadow: 0 0 24px rgba(200,155,60,.25); flex-shrink: 0; }
+.hero-avatar { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 24px; font-weight: 700; color: rgba(255,255,255,.9); border: 3px solid rgba(200,155,60,.4); box-shadow: 0 0 24px rgba(200,155,60,.25); flex-shrink: 0; }
+.hero-info { flex: 1; }
+.hero-lbl { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: .7; margin-bottom: 4px; }
+.hero-name { font-family: var(--font-display); font-size: clamp(20px,4vw,32px); font-weight: 900; color: #fff; margin-bottom: 8px; }
+.hero-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.htag { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+.htag-assassin { background: rgba(200,57,60,.12); color: var(--red); border: 1px solid rgba(200,57,60,.25); }
+.htag-carry { background: rgba(156,39,176,.12); color: #CE93D8; border: 1px solid rgba(156,39,176,.25); }
+.htag-engage { background: rgba(11,196,227,.12); color: var(--blue); border: 1px solid rgba(11,196,227,.25); }
+.htag-tank { background: rgba(76,175,80,.12); color: #4CAF50; border: 1px solid rgba(76,175,80,.25); }
+.htag-poke { background: rgba(200,155,60,.12); color: var(--gold); border: 1px solid rgba(200,155,60,.25); }
+.htag-cc { background: rgba(255,152,0,.12); color: #FFB74D; border: 1px solid rgba(255,152,0,.25); }
+.hero-skill { margin-top: 8px; font-size: 12px; color: var(--text2); }
+.hero-skill b { color: var(--gold); font-family: var(--font-mono); letter-spacing: 1px; }
+.hero-vs { text-align: right; flex-shrink: 0; }
+.hero-vs-lbl { font-size: 10px; letter-spacing: 2px; color: var(--text2); text-transform: uppercase; margin-bottom: 4px; }
+.hero-vs-row { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
+.hero-vs-img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(200,57,60,.3); }
+.hero-vs-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 10px; font-weight: 700; color: rgba(255,255,255,.8); }
+.hero-vs-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--red); }
+
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.pill { padding: 4px 11px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.pill-e { background: rgba(11,196,227,.1); color: var(--blue); border: 1px solid rgba(11,196,227,.2); }
+.pill-p { background: rgba(200,155,60,.1); color: var(--gold); border: 1px solid rgba(200,155,60,.2); }
+.pill-t { background: rgba(76,175,80,.1); color: #4CAF50; border: 1px solid rgba(76,175,80,.2); }
+.pill-a { background: rgba(200,57,60,.1); color: var(--red); border: 1px solid rgba(200,57,60,.2); }
+.pill-c { background: rgba(156,39,176,.1); color: #CE93D8; border: 1px solid rgba(156,39,176,.2); }
+
+.summary-box { background: rgba(11,196,227,.04); border: 1px solid rgba(11,196,227,.12); border-left: 3px solid rgba(11,196,227,.5); border-radius: 0 10px 10px 0; padding: 14px 18px; font-size: 13px; line-height: 1.7; color: var(--text); margin-bottom: 18px; }
+.summary-box b { color: #fff; }
+
+.guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.guide-grid.full-row { grid-template-columns: 1fr; }
+
+.gsec { background: var(--panel); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+.gsec.span2 { grid-column: 1/-1; }
+.gsec-hdr { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.gsec-icon { font-size: 16px; }
+.gsec-title { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+.gsec-body { padding: 14px 18px; }
+
+/* RUNES */
+.rune-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.rune-row:last-child { border-bottom: none; }
+.rune-img-wrap { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: rgba(200,155,60,.1); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(200,155,60,.2); }
+.rune-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.rune-img-wrap .rune-fallback { font-size: 16px; }
+.rune-info { flex: 1; }
+.rune-name { font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+.rune-ana { font-size: 9px; color: var(--gold); border: 1px solid rgba(200,155,60,.35); padding: 1px 5px; border-radius: 3px; }
+.rune-why { font-size: 11px; color: var(--text2); line-height: 1.45; }
+.rune-tree { font-size: 9px; padding: 2px 7px; border-radius: 3px; background: rgba(200,155,60,.1); color: var(--gold); border: 1px solid rgba(200,155,60,.2); margin-left: auto; flex-shrink: 0; white-space: nowrap; }
+
+/* ITEMS */
+.item-phase { margin-bottom: 14px; }
+.item-phase:last-child { margin-bottom: 0; }
+.item-phase-lbl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; }
+.items-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.ichip { background: var(--panel2); border: 1px solid var(--border2); border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 8px; transition: border-color .2s; }
+.ichip:hover { border-color: rgba(200,155,60,.3); }
+.item-img-wrap { width: 36px; height: 36px; border-radius: 6px; overflow: hidden; flex-shrink: 0; background: rgba(11,100,150,.2); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(11,196,227,.15); }
+.item-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.item-img-wrap .item-fallback { font-size: 11px; font-weight: 700; color: var(--blue); font-family: var(--font-display); }
+.item-text { }
+.item-name { font-size: 12px; font-weight: 600; color: #fff; }
+.item-tip { font-size: 10px; color: var(--text2); }
+
+/* WIN CONDITIONS */
+.wc-list { display: flex; flex-direction: column; gap: 8px; }
+.wc-item { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; background: var(--panel2); border-radius: 8px; border-left: 2px solid var(--gold); }
+.wc-num { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+.wc-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+/* MATCHUP */
+.matchup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mside { padding: 12px; background: var(--panel2); border-radius: 10px; }
+.mside-title { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+.mside.do .mside-title { color: var(--green); }
+.mside.dont .mside-title { color: var(--red); }
+.mtip { font-size: 11px; color: var(--text); line-height: 1.5; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); display: flex; gap: 7px; align-items: flex-start; }
+.mtip:last-child { border-bottom: none; }
+.mside.do .mtip::before { content: '✓'; color: var(--green); flex-shrink: 0; font-weight: 700; }
+.mside.dont .mtip::before { content: '✕'; color: var(--red); flex-shrink: 0; font-weight: 700; }
+
+/* TIMELINE */
+.tl { display: flex; flex-direction: column; }
+.tl-item { display: flex; gap: 14px; align-items: flex-start; }
+.tl-aside { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--gold); background: var(--bg); margin-top: 3px; flex-shrink: 0; }
+.tl-line { width: 1px; flex: 1; min-height: 20px; background: linear-gradient(180deg, rgba(200,155,60,.35), transparent); }
+.tl-item:last-child .tl-line { display: none; }
+.tl-body { padding-bottom: 18px; }
+.tl-time { font-family: var(--font-mono); font-size: 10px; color: var(--gold); letter-spacing: 1px; margin-bottom: 3px; }
+.tl-text { font-size: 12px; color: var(--text); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════
+   SEARCH MODAL
+═══════════════════════════════════════════ */
+.soverlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
+.soverlay.open { display: flex; }
+.smodal { background: var(--panel2); border: 1px solid var(--border2); border-radius: 16px; width: min(440px, 95vw); overflow: hidden; box-shadow: 0 32px 100px rgba(0,0,0,.9); animation: modalIn .2s cubic-bezier(.34,1.56,.64,1); }
+@keyframes modalIn { from { opacity:0; transform:scale(.88) translateY(-20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.sm-hdr { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+.sm-hdr-icon { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.sm-hdr-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--panel3); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.sm-lbl { font-family: var(--font-display); font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.sm-input-wrap { padding: 12px; border-bottom: 1px solid var(--border); }
+.sm-input-wrap input { width: 100%; background: var(--panel); border: 1px solid var(--border2); border-radius: 8px; padding: 11px 16px; color: #fff; font-family: var(--font-body); font-size: 15px; font-weight: 500; outline: none; transition: border-color .2s; }
+.sm-input-wrap input:focus { border-color: var(--gold); }
+.sm-input-wrap input::placeholder { color: var(--text2); opacity: .5; }
+.sm-results { max-height: 320px; overflow-y: auto; }
+.sm-results::-webkit-scrollbar { width: 3px; }
+.sm-results::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.sm-item { padding: 10px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,.03); transition: background .1s; }
+.sm-item:hover, .sm-item.hl { background: rgba(200,155,60,.08); }
+.sm-item-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(200,155,60,.2); flex-shrink: 0; }
+.sm-item-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 11px; font-weight: 700; color: rgba(255,255,255,.85); flex-shrink: 0; }
+.sm-item-name { font-size: 14px; font-weight: 600; color: #fff; }
+.sm-nores { padding: 24px; text-align: center; font-size: 13px; color: var(--text2); opacity: .4; }
+
+@media (max-width: 640px) {
+  .draft-grid { grid-template-columns: 1fr 1fr; }
+  .vs-mid { display: none; }
+  .guide-grid { grid-template-columns: 1fr; }
+  .matchup-grid { grid-template-columns: 1fr; }
+  .mains-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="app">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">RIFT<em>GUIDE</em></div>
+  <div class="tagline">League of Legends &middot; Draft Analizi &amp; Oyun Rehberi</div>
+</header>
+
+<!-- STEP NAV -->
+<nav class="step-nav">
+  <div class="step-item active" id="si1">
+    <button class="step-btn" onclick="goStep(1)">
+      <div class="step-circle">1</div>
+      <div class="step-lbl">Profil</div>
+    </button>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-item" id="si2">
+    <button class="step-btn" onclick="goStep(2)">
+      <div class="step-circle">2</div>
+      <div class="step-lbl">Draft</div>
+    </button>
+    <div class="step-line"></div>
+  </div>
+  <div class="step-item" id="si3">
+    <button class="step-btn">
+      <div class="step-circle">3</div>
+      <div class="step-lbl">Rehber</div>
+    </button>
+  </div>
+</nav>
+
+<!-- PAGE 1 -->
+<main class="page active" id="page1">
+  <div class="page-title">
+    <h2>Profilini Olu&#351;tur</h2>
+    <p>Rol&#252;n&#252; se&#231; ve mainlerini gir</p>
+  </div>
+
+  <div class="role-grid">
+    <button class="role-btn sel" data-role="top" onclick="selRole('top')">
+      <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/svg/position-top.svg" class="role-svg" onerror="this.style.display='none'">
+      <div class="role-lbl">&#220;st</div>
+    </button>
+    <button class="role-btn" data-role="jg" onclick="selRole('jg')">
+      <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/svg/position-jungle.svg" class="role-svg" onerror="this.style.display='none'">
+      <div class="role-lbl">Orman</div>
+    </button>
+    <button class="role-btn" data-role="mid" onclick="selRole('mid')">
+      <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/svg/position-mid.svg" class="role-svg" onerror="this.style.display='none'">
+      <div class="role-lbl">Orta</div>
+    </button>
+    <button class="role-btn" data-role="bot" onclick="selRole('bot')">
+      <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/svg/position-bottom.svg" class="role-svg" onerror="this.style.display='none'">
+      <div class="role-lbl">Bot</div>
+    </button>
+    <button class="role-btn" data-role="sup" onclick="selRole('sup')">
+      <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/svg/position-utility.svg" class="role-svg" onerror="this.style.display='none'">
+      <div class="role-lbl">Destek</div>
+    </button>
+  </div>
+
+  <div class="section-lbl" id="mainsLbl">5 Main &#350;ampiyonunu Se&#231;</div>
+  <div class="mains-grid" id="mainsGrid"></div>
+  <button class="primary-btn" id="toStep2" onclick="goStep(2)" disabled>Devam Et &#8594;</button>
+</main>
+
+<!-- PAGE 2 -->
+<main class="page" id="page2">
+  <div class="draft-hdr">
+    <h2>Draft Ekran&#305;</h2>
+    <p>Tak&#305;m&#305;n&#305; gir &bull; Pickin&#305; se&#231; &bull; Draft&#305; tamamla &bull; Rehberi a&#231;</p>
+  </div>
+
+  <div class="phase-info" id="phaseInfo">
+    &#9989; Pickin: <b id="phasePickName">-</b> &nbsp;&mdash;&nbsp; &#350;imdi draf&#305; tamamla, sonra rehberi a&#231;
+  </div>
+
+  <div class="draft-grid">
+    <div class="team-box blue-box">
+      <div class="team-box-hdr">&#128309; Senin Tak&#305;m&#305;n</div>
+      <div class="slots-wrap" id="blueSlots"></div>
+    </div>
+    <div class="vs-mid"><div class="vs-txt">VS</div></div>
+    <div class="team-box red-box">
+      <div class="team-box-hdr">&#128308; Rakip Tak&#305;m</div>
+      <div class="slots-wrap" id="redSlots"></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="gbtn gbtn-gold" onclick="doAnalyze()">&#9889; Pick &#214;ner</button>
+    <button class="gbtn gbtn-blue" id="guideBtn" style="display:none" onclick="openGuide()">&#128218; Rehberi A&#231;</button>
+    <button class="gbtn gbtn-ghost" onclick="clearDraft()">&#8634; Temizle</button>
+  </div>
+
+  <div class="pick-reco" id="pickReco">
+    <div class="pr-hdr">
+      <div class="pr-title">&#9889; &#214;nerilen Pickler</div>
+      <div class="pr-sub">Birini se&#231; &#8594; draft&#305; tamamla</div>
+    </div>
+    <div class="pick-row" id="pickRow"></div>
+    <div class="pr-hint">Bir karta t&#305;kla &bull; Pick se&#231;ilir &bull; Kalan slotlar&#305; doldur &bull; Rehberi a&#231;</div>
+  </div>
+</main>
+
+<!-- PAGE 3 -->
+<main class="page" id="page3">
+  <button class="back-btn" onclick="goStep(2)">&#8592; Draft&#39;a D&#246;n</button>
+  <div id="guideContent"></div>
+</main>
+
+</div><!-- /app -->
+
+<!-- SEARCH MODAL -->
+<div class="soverlay" id="sOverlay" onclick="closeSrch(event)">
+  <div class="smodal" onclick="event.stopPropagation()">
+    <div class="sm-hdr">
+      <div id="smIcon"><div class="sm-hdr-avatar">&#9876;</div></div>
+      <div class="sm-lbl" id="smLbl">&#350;ampiyon Se&#231;</div>
+    </div>
+    <div class="sm-input-wrap">
+      <input type="text" id="sInput" placeholder="&#350;ampiyon ad&#305; yaz..." oninput="filterS()" onkeydown="keyS(event)" autocomplete="off">
+    </div>
+    <div class="sm-results" id="sResults"></div>
+  </div>
+</div>
+
+<script>
+
+// ═══════════════════════════════════════════════════════
+// CONFIG
+const API_KEY = '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'; // <-- API KEY BURAYA
+// ═══════════════════════════════════════════════════════
+const DDV = '14.24.1';
+const DD = `https://ddragon.leagueoflegends.com/cdn/${DDV}/img/champion/`;
+const DD_ITEM = `https://ddragon.leagueoflegends.com/cdn/${DDV}/img/item/`;
+const DD_RUNE = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/`;
+
+// DDragon internal name overrides
+const DDN = {
+  'Aurelion Sol':'AurelionSol', "Bel’Veth":'Belveth', "Cho’Gath":'Chogath',
+  'Dr. Mundo':'DrMundo', 'Jarvan IV':'JarvanIV', "Kai’Sa":'Kaisa',
+  "Kha’Zix":'Khazix', "Kog’Maw":'KogMaw', "K’Sante":'KSante',
+  'Lee Sin':'LeeSin', 'Master Yi':'MasterYi', 'Miss Fortune':'MissFortune',
+  'Nunu & Willump':'Nunu', "Rek’Sai":'RekSai', 'Renata Glasc':'Renata',
+  'Tahm Kench':'TahmKench', 'Twisted Fate':'TwistedFate', "Vel’Koz":'Velkoz',
+  'Wukong':'MonkeyKing', 'Xin Zhao':'XinZhao'
+};
+
+function champImg(n) {
+  const k = DDN[n] || n.replace(/[\s'.]/g,'');
+  return DD + k + '.png';
+}
+
+// ═══════════════════════════════════════════════════════
+// CHAMPION DATA
+// ═══════════════════════════════════════════════════════
+const CHAMPS = [
+  {n:'Aatrox',t:{tank:1,carry:1,melee:1,dive:1,teamfight:1}},
+  {n:'Ahri',t:{assassin:1,carry:1,cc:1,ranged:1,poke:1}},
+  {n:'Akali',t:{assassin:1,carry:1,dive:1,melee:1}},
+  {n:'Akshan',t:{carry:1,poke:1,ranged:1}},
+  {n:'Alistar',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Amumu',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Anivia',t:{poke:1,carry:1,cc:1,ranged:1}},
+  {n:'Annie',t:{carry:1,cc:1,ranged:1,engage:1}},
+  {n:'Aphelios',t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'Ashe',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Aurelion Sol',t:{carry:1,poke:1,ranged:1}},
+  {n:'Aurora',t:{assassin:1,carry:1,cc:1,ranged:1}},
+  {n:'Azir',t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'Bard',t:{tank:1,engage:1,cc:1,ranged:1}},
+  {n:"Bel’Veth",t:{carry:1,assassin:1,melee:1,dive:1}},
+  {n:'Blitzcrank',t:{tank:1,engage:1,cc:1,melee:1}},
+  {n:'Brand',t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'Braum',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Briar',t:{carry:1,assassin:1,melee:1,dive:1}},
+  {n:'Caitlyn',t:{carry:1,poke:1,ranged:1}},
+  {n:'Camille',t:{split:1,carry:1,cc:1,melee:1,dive:1}},
+  {n:'Cassiopeia',t:{carry:1,poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:"Cho’Gath",t:{tank:1,carry:1,cc:1,melee:1,teamfight:1}},
+  {n:'Corki',t:{carry:1,poke:1,ranged:1}},
+  {n:'Darius',t:{tank:1,carry:1,melee:1,dive:1}},
+  {n:'Diana',t:{assassin:1,carry:1,engage:1,melee:1,dive:1}},
+  {n:'Dr. Mundo',t:{tank:1,carry:1,melee:1,split:1}},
+  {n:'Draven',t:{carry:1,ranged:1}},
+  {n:'Ekko',t:{assassin:1,carry:1,melee:1,dive:1}},
+  {n:'Elise',t:{assassin:1,engage:1,cc:1,melee:1}},
+  {n:'Evelynn',t:{assassin:1,carry:1,melee:1,dive:1}},
+  {n:'Ezreal',t:{carry:1,poke:1,ranged:1}},
+  {n:'Fiddlesticks',t:{carry:1,engage:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Fiora',t:{split:1,carry:1,melee:1}},
+  {n:'Fizz',t:{assassin:1,carry:1,melee:1,dive:1}},
+  {n:'Galio',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Gangplank',t:{carry:1,poke:1,split:1,teamfight:1}},
+  {n:'Garen',t:{tank:1,carry:1,melee:1,split:1}},
+  {n:'Gnar',t:{tank:1,engage:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Gragas',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Graves',t:{carry:1,poke:1,ranged:1}},
+  {n:'Gwen',t:{carry:1,split:1,melee:1}},
+  {n:'Hecarim',t:{engage:1,carry:1,cc:1,melee:1,dive:1,teamfight:1}},
+  {n:'Heimerdinger',t:{poke:1,carry:1,ranged:1}},
+  {n:'Hwei',t:{poke:1,carry:1,ranged:1,teamfight:1}},
+  {n:'Illaoi',t:{tank:1,carry:1,melee:1,split:1}},
+  {n:'Irelia',t:{carry:1,split:1,melee:1,dive:1}},
+  {n:'Ivern',t:{tank:1,engage:1,cc:1,ranged:1}},
+  {n:'Janna',t:{poke:1,cc:1,ranged:1}},
+  {n:'Jarvan IV',t:{engage:1,tank:1,cc:1,melee:1,teamfight:1,dive:1}},
+  {n:'Jax',t:{carry:1,split:1,melee:1,dive:1}},
+  {n:'Jayce',t:{carry:1,poke:1,ranged:1,split:1}},
+  {n:'Jhin',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Jinx',t:{carry:1,ranged:1,teamfight:1}},
+  {n:"K’Sante",t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:"Kai’Sa",t:{carry:1,assassin:1,ranged:1,dive:1}},
+  {n:'Kalista',t:{carry:1,engage:1,ranged:1,teamfight:1}},
+  {n:'Karma',t:{poke:1,carry:1,cc:1,ranged:1}},
+  {n:'Karthus',t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'Kassadin',t:{assassin:1,carry:1,melee:1,dive:1}},
+  {n:'Katarina',t:{assassin:1,carry:1,melee:1,teamfight:1,dive:1}},
+  {n:'Kayle',t:{carry:1,split:1,ranged:1,teamfight:1}},
+  {n:'Kayn',t:{assassin:1,carry:1,melee:1,dive:1}},
+  {n:'Kennen',t:{carry:1,engage:1,cc:1,ranged:1,teamfight:1}},
+  {n:"Kha’Zix",t:{assassin:1,melee:1,dive:1}},
+  {n:'Kindred',t:{carry:1,poke:1,ranged:1}},
+  {n:'Kled',t:{carry:1,engage:1,melee:1,dive:1}},
+  {n:"Kog’Maw",t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'LeBlanc',t:{assassin:1,carry:1,cc:1,ranged:1}},
+  {n:'Lee Sin',t:{assassin:1,engage:1,cc:1,melee:1,dive:1}},
+  {n:'Leona',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Lillia',t:{carry:1,poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Lissandra',t:{tank:1,engage:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Lucian',t:{carry:1,poke:1,ranged:1}},
+  {n:'Lulu',t:{poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Lux',t:{poke:1,carry:1,cc:1,ranged:1}},
+  {n:'Malphite',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Malzahar',t:{carry:1,cc:1,ranged:1}},
+  {n:'Maokai',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Master Yi',t:{carry:1,assassin:1,melee:1,dive:1}},
+  {n:'Mel',t:{carry:1,poke:1,ranged:1}},
+  {n:'Milio',t:{poke:1,cc:1,ranged:1}},
+  {n:'Miss Fortune',t:{carry:1,poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Mordekaiser',t:{tank:1,carry:1,melee:1,teamfight:1}},
+  {n:'Morgana',t:{tank:1,poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Naafiri',t:{assassin:1,carry:1,melee:1,dive:1}},
+  {n:'Nami',t:{poke:1,cc:1,engage:1,ranged:1,teamfight:1}},
+  {n:'Nasus',t:{tank:1,split:1,melee:1}},
+  {n:'Nautilus',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Neeko',t:{poke:1,cc:1,engage:1,ranged:1,teamfight:1}},
+  {n:'Nidalee',t:{poke:1,carry:1,ranged:1}},
+  {n:'Nilah',t:{carry:1,engage:1,melee:1,teamfight:1}},
+  {n:'Nocturne',t:{assassin:1,carry:1,melee:1,dive:1}},
+  {n:'Nunu & Willump',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Olaf',t:{carry:1,tank:1,melee:1,dive:1}},
+  {n:'Orianna',t:{carry:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Ornn',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Pantheon',t:{assassin:1,poke:1,cc:1,melee:1}},
+  {n:'Poppy',t:{tank:1,engage:1,cc:1,melee:1}},
+  {n:'Pyke',t:{assassin:1,engage:1,cc:1,melee:1}},
+  {n:'Qiyana',t:{assassin:1,carry:1,cc:1,melee:1,teamfight:1}},
+  {n:'Quinn',t:{carry:1,split:1,ranged:1}},
+  {n:'Rakan',t:{engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Rammus',t:{tank:1,engage:1,cc:1,melee:1}},
+  {n:"Rek’Sai",t:{engage:1,tank:1,cc:1,melee:1,dive:1}},
+  {n:'Rell',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Renata Glasc',t:{poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Renekton',t:{tank:1,engage:1,cc:1,melee:1,dive:1}},
+  {n:'Rengar',t:{assassin:1,melee:1,dive:1}},
+  {n:'Riven',t:{carry:1,split:1,cc:1,melee:1,dive:1}},
+  {n:'Rumble',t:{carry:1,poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Ryze',t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'Samira',t:{carry:1,assassin:1,melee:1,teamfight:1,dive:1}},
+  {n:'Sejuani',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Senna',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Seraphine',t:{poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Sett',t:{tank:1,carry:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Shaco',t:{assassin:1,melee:1}},
+  {n:'Shen',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Shyvana',t:{carry:1,tank:1,melee:1,teamfight:1,dive:1}},
+  {n:'Singed',t:{tank:1,split:1,melee:1}},
+  {n:'Sion',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Sivir',t:{carry:1,engage:1,ranged:1,teamfight:1}},
+  {n:'Skarner',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Smolder',t:{carry:1,poke:1,ranged:1}},
+  {n:'Sona',t:{poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Soraka',t:{poke:1,cc:1,ranged:1}},
+  {n:'Swain',t:{tank:1,carry:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Sylas',t:{carry:1,assassin:1,cc:1,melee:1,dive:1,ultSteal:1}},
+  {n:'Syndra',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Tahm Kench',t:{tank:1,carry:1,cc:1,melee:1}},
+  {n:'Taliyah',t:{poke:1,carry:1,cc:1,ranged:1}},
+  {n:'Talon',t:{assassin:1,melee:1,dive:1}},
+  {n:'Taric',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1}},
+  {n:'Teemo',t:{poke:1,carry:1,ranged:1}},
+  {n:'Thresh',t:{tank:1,engage:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Tristana',t:{carry:1,assassin:1,ranged:1,dive:1}},
+  {n:'Trundle',t:{tank:1,carry:1,cc:1,melee:1,teamfight:1}},
+  {n:'Tryndamere',t:{carry:1,split:1,melee:1,dive:1}},
+  {n:'Twisted Fate',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Twitch',t:{carry:1,assassin:1,ranged:1,teamfight:1}},
+  {n:'Udyr',t:{tank:1,engage:1,cc:1,melee:1}},
+  {n:'Urgot',t:{tank:1,carry:1,cc:1,ranged:1}},
+  {n:'Varus',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Vayne',t:{carry:1,split:1,ranged:1,dive:1}},
+  {n:'Veigar',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:"Vel’Koz",t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'Vex',t:{carry:1,assassin:1,cc:1,ranged:1}},
+  {n:'Vi',t:{tank:1,engage:1,cc:1,melee:1,dive:1}},
+  {n:'Viego',t:{carry:1,assassin:1,melee:1,dive:1}},
+  {n:'Viktor',t:{carry:1,poke:1,cc:1,ranged:1,teamfight:1}},
+  {n:'Vladimir',t:{carry:1,poke:1,ranged:1,teamfight:1}},
+  {n:'Volibear',t:{tank:1,carry:1,engage:1,cc:1,melee:1,dive:1,bigUlt:1}},
+  {n:'Warwick',t:{tank:1,engage:1,cc:1,melee:1,dive:1}},
+  {n:'Wukong',t:{engage:1,carry:1,cc:1,melee:1,teamfight:1,dive:1,bigUlt:1}},
+  {n:'Xayah',t:{carry:1,ranged:1,teamfight:1}},
+  {n:'Xerath',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Xin Zhao',t:{engage:1,carry:1,cc:1,melee:1,dive:1,teamfight:1}},
+  {n:'Yasuo',t:{carry:1,melee:1,teamfight:1,dive:1}},
+  {n:'Yone',t:{carry:1,assassin:1,cc:1,melee:1,teamfight:1,dive:1}},
+  {n:'Yorick',t:{split:1,tank:1,melee:1}},
+  {n:'Yunara',t:{carry:1,poke:1,ranged:1}},
+  {n:'Yuumi',t:{poke:1,ranged:1,teamfight:1}},
+  {n:'Zaahen',t:{carry:1,engage:1,ranged:1}},
+  {n:'Zac',t:{tank:1,engage:1,cc:1,melee:1,teamfight:1,bigUlt:1}},
+  {n:'Zed',t:{assassin:1,melee:1,dive:1}},
+  {n:'Zeri',t:{carry:1,split:1,ranged:1}},
+  {n:'Ziggs',t:{carry:1,poke:1,ranged:1}},
+  {n:'Zilean',t:{poke:1,cc:1,ranged:1}},
+  {n:'Zoe',t:{carry:1,poke:1,cc:1,ranged:1}},
+  {n:'Zyra',t:{carry:1,poke:1,cc:1,ranged:1,teamfight:1}},
+];
+
+const ROLES = [
+  {k:'top',l:'Ust Serit',e:'⚔️'},
+  {k:'jg', l:'Orman',    e:'🌲'},
+  {k:'mid',l:'Orta Serit',e:'🔮'},
+  {k:'bot',l:'Bot Serit', e:'🏹'},
+  {k:'sup',l:'Destek',    e:'🛡️'},
+];
+
+// ═══════════════════════════════════════════════════════
+// MATCHUP SCORES  [Nocturne, Graves, Xin Zhao, Viego, Jarvan IV]
+// ═══════════════════════════════════════════════════════
+const JG_VS = {
+  'Lee Sin':    [65,70,80,65,70],
+  'Master Yi':  [85,70,75,70,80],
+  'Kayn':       [75,80,75,85,70],
+  'Warwick':    [80,75,75,70,75],
+  'Briar':      [82,70,72,65,68],
+  "Rek’Sai":   [72,78,85,70,75],
+  'Viego':      [88,75,72,50,72],
+  'Nocturne':   [50,72,75,80,82],
+  'Graves':     [78,50,72,75,72],
+  'Xin Zhao':   [72,75,50,78,75],
+  'Hecarim':    [75,78,72,70,72],
+  'Diana':      [72,82,70,70,72],
+  "Kha’Zix":   [72,70,82,78,85],
+  'Udyr':       [75,72,88,70,78],
+  'Lillia':     [85,72,70,68,70],
+  'Ekko':       [75,82,70,70,70],
+  'Amumu':      [80,72,75,70,78],
+  'Shyvana':    [82,80,72,68,70],
+  'Sejuani':    [78,75,80,70,75],
+  'Zac':        [75,72,78,70,75],
+  'Volibear':   [80,75,78,70,72],
+  'Vi':         [75,72,80,70,78],
+  'Wukong':     [75,78,75,70,75],
+  'Elise':      [72,78,75,70,75],
+  'Rengar':     [80,75,72,70,72],
+  'Shaco':      [80,75,72,72,70],
+  'Evelynn':    [72,75,70,78,70],
+  'Ivern':      [90,80,78,72,75],
+  'Olaf':       [72,75,82,70,72],
+  'Rammus':     [72,70,78,72,80],
+  'Sylas':      [72,70,75,70,80],
+  'Naafiri':    [75,80,75,70,72],
+  'Talon':      [75,72,78,72,80],
+  'Jarvan IV':  [72,70,75,80,50],
+  'Karthus':    [85,72,70,70,72],
+  'Skarner':    [78,72,80,70,78],
+  'Fiddlesticks':[82,70,72,70,72],
+  'Kindred':    [78,75,72,75,70],
+  'Poppy':      [78,72,80,70,75],
+  'Nunu & Willump':[75,72,80,70,78],
+};
+
+// Tag bonuses vs enemy comp [Noct, Graves, Xin, Viego, J4]
+const TV = {engage:[8,3,3,-2,5],poke:[6,3,4,3,6],tank:[-2,7,3,6,0],carry:[4,3,3,7,2],assassin:[2,3,7,-3,7],cc:[3,2,5,-2,6],dive:[5,3,4,2,3],teamfight:[3,4,4,6,4]};
+// Tag bonuses with my team
+const TW = {engage:[2,3,3,2,6],poke:[3,5,2,2,3],tank:[2,4,3,2,3],carry:[4,2,2,5,2],cc:[3,2,4,2,4],teamfight:[4,3,5,4,5]};
+
+// ═══════════════════════════════════════════════════════
+// GUIDES DATA
+// ═══════════════════════════════════════════════════════
+const GUIDES = {
+  'Nocturne': {
+    tags: ['assassin','dive','carry'],
+    skillOrder: 'Q → E → W (önce max)',
+    runes: [
+      {img:'styles/precision/conqueror/conqueror.png',     n:'Conqueror',      w:'Extended duel ve kill zinciri için — stack ile carry eritirsin', tree:'Precision', key:true},
+      {img:'styles/precision/triumph/triumph.png',         n:'Triumph',        w:'Kill sonrası HP kazanımı, fight zincirinde hayatta kalırsın',   tree:'Precision'},
+      {img:'styles/precision/legendalacrity/legendalacrity.png', n:'Legend: Alacrity', w:'AS stacking — auto tabanlı hasarını hızlandırır',     tree:'Precision'},
+      {img:'styles/precision/coupdegrace/coupdegrace.png', n:'Coup de Grace',  w:'Düşük HP hedefte kill güvencesi',                              tree:'Precision'},
+      {img:'styles/domination/grislymementos/grislymementos.png',n:'Grisly Mementos',w:'Camp farmından bonus gold',                             tree:'Domination'},
+      {img:'styles/domination/ultimatehunter/ultimatehunter.png',n:'Ultimate Hunter',w:'Paranoia CD azalır — daha sık ult = daha fazla baskı', tree:'Domination'},
+    ],
+    items: [
+      {ph:'Başlangıç', its:[
+        {img:'1103.png', n:'Scorchclaw Pup', tip:'Red buff camp clear için'},
+        {img:'2031.png', n:'Refillable Potion'},
+      ]},
+      {ph:'Mythic (en yüksek WR)', its:[
+        {img:'223073.png', n:'Experimental Hexplate', tip:'S+ tier'},
+        {img:'6693.png',   n:'Prowler\'s Claw',       tip:'Full lethality build'},
+      ]},
+      {ph:'Ayakkabı', its:[
+        {img:'3047.png', n:'Plated Steelcaps', tip:'Fiziksel ağır takıma karşı'},
+        {img:'3009.png', n:'Boots of Swiftness', tip:'Kite edilmemek için'},
+      ]},
+      {ph:'Core', its:[
+        {img:'3071.png', n:'Black Cleaver'},
+        {img:'6333.png', n:'Death\'s Dance'},
+        {img:'3053.png', n:'Sterak\'s Gage', tip:'Burst\'e karşı shield'},
+      ]},
+    ],
+    tl: [
+      {t:'0:00 — Başlangıç (Kırmızı Taraf)', x:'Red Brambleback → Raptors → Krugs → Blue Sentinel → Gromp → Wolves. Level 3\'te scuttle fight al.'},
+      {t:'0:00 — Başlangıç (Mavi Taraf)',    x:'Blue Sentinel → Gromp → Wolves → Red Brambleback → Raptors → Krugs. Level 3\'te scuttle fight al.'},
+      {t:'3:00-6:00 — İlk Gank',             x:'E ile slow yap, W ile fear, Q ile son vur. Bot veya hangisinde hazır lane varsa oraya. Scuttle kontrolü şart.'},
+      {t:'6:00 — Level 6 Spike',             x:'R hazır! Rakip ADC veya mid düşük HP\'deyse veya izolendeyse R bas — backline\'a uç, squishi bitir.'},
+      {t:'6:00-14:00 — Snowball',            x:'Dragon her spawn\'da hazır ol. Herald\'ı al, mid tower bas. Enemy JG\'nin farm geride kalırsa invade et.'},
+      {t:'14:00+ — Geç Oyun',                x:'Teamfight\'ta R ile carry\'e dal. Tanklara girme. Baron ve Elder\'a mutlaka katıl.'},
+    ],
+    wc: [
+      'R ile ADC veya mid\'e dal, squishi\'leri önce bitir',
+      'Early farm — level 6 öncesi gank risk alma, item spike önemli',
+      'Dragon ve Herald kontrolü — obje önceliği kesinlikle',
+      'Ward koy, enemy JG nerede bilmeden ult atma',
+    ],
+    do:   ['Gank\'ta E ile önce slow yap sonra W fear', 'Level 6\'da haritada low HP izole hedef gör R bas', 'Her dragon spawn\'ında haritada ol'],
+    dont: ['Tank\'a dalmak — önce squishi hedefle', 'R cooldown\'deyken overextend', 'Uzun teamfight — burst ve çekil taktiği kullan'],
+  },
+
+  'Graves': {
+    tags: ['carry','poke','ranged'],
+    skillOrder: 'Q → E → W (önce max)',
+    runes: [
+      {img:'styles/domination/darkharvest/darkharvest.png',    n:'Dark Harvest',    w:'Stack ile one-shot potansiyeli — lethality build ile patlama', tree:'Domination', key:true},
+      {img:'styles/domination/suddenimpact/suddenimpact.png',  n:'Sudden Impact',   w:'Her Quickdraw (E) sonrası lethality patlaması',                tree:'Domination'},
+      {img:'styles/domination/grislymementos/grislymementos.png',n:'Grisly Mementos',w:'Farm gold kazanımı',                                         tree:'Domination'},
+      {img:'styles/domination/treasurehunter/treasurehunter.png',n:'Treasure Hunter',w:'İlk kill\'e hızlı item spike',                               tree:'Domination'},
+      {img:'styles/precision/legendalacrity/legendalacrity.png',n:'Legend: Alacrity',w:'AS — hasar döngüsü için kritik',                             tree:'Precision'},
+      {img:'styles/precision/triumph/triumph.png',              n:'Triumph',         w:'Fight ortasında HP kazanımı',                                 tree:'Precision'},
+    ],
+    items: [
+      {ph:'Başlangıç', its:[
+        {img:'1103.png', n:'Scorchclaw Pup'},
+        {img:'2031.png', n:'Refillable Potion'},
+      ]},
+      {ph:'Mythic (en yüksek WR)', its:[
+        {img:'6698.png', n:'Profane Hydra',  tip:'S+ tier — lethality + wave clear'},
+        {img:'6694.png', n:'Hubris',         tip:'Lethality stacking'},
+      ]},
+      {ph:'Ayakkabı', its:[
+        {img:'3047.png', n:'Plated Steelcaps'},
+      ]},
+      {ph:'Core', its:[
+        {img:'6701.png', n:'Opportunity'},
+        {img:'3036.png', n:'Lord Dominik\'s Regards'},
+        {img:'6035.png', n:'Infinity Edge', tip:'Crit stacking ile hasar'},
+      ]},
+    ],
+    tl: [
+      {t:'0:00 — Başlangıç (Kırmızı Taraf)', x:'Red Brambleback → Raptors → Krugs → Blue Sentinel → Gromp → Wolves. Graves hızlı clear yapar.'},
+      {t:'0:00 — Başlangıç (Mavi Taraf)',    x:'Blue Sentinel → Gromp → Wolves → Red Brambleback → Raptors → Krugs. Level 4\'te scuttle al.'},
+      {t:'3:30-6:00 — Erken Gank',           x:'Bot gank çok güçlü. E ile pozisyon al, Q\'yu duvara yakın at (patlama erkene gelir). Hızlı burst.'},
+      {t:'6:00-14:00 — Farm ve Gank',        x:'Graves hızlı farm yapar. Fırsat yok mu? Farm yap. Scuttle her spawn\'da al. Herald için mid/top\'a bak.'},
+      {t:'14:00+ — Geç Oyun',                x:'KESİNLİKLE backline pozisyon. Tank veya engage arkasında kal, Q bombala. Asla dive etme.'},
+    ],
+    wc: [
+      'Backline\'da kal — asla engage içine girme',
+      'Quickdraw (E) ile sürekli pozisyon değiştir, statik durma',
+      'Lethality ile tank bile olsa eridir',
+      'Q\'yu duvara yakın at — patlama erkene gelir, daha fazla hasar',
+    ],
+    do:   ['E ile sürekli pozisyon ayarla', 'Q\'yu wall\'a yakın at', 'Her zaman arkadan hasar çıkar'],
+    dont: ['Engage içine girme, melee range tehlikeli', 'Tumble CD\'deyken fight başlatma', 'Geç oyunda solo invade deneme'],
+  },
+
+  'Xin Zhao': {
+    tags: ['engage','carry','cc'],
+    skillOrder: 'W → E → Q (önce max)',
+    runes: [
+      {img:'styles/precision/conqueror/conqueror.png',             n:'Conqueror',        w:'Extended fight ve sustained hasar — en iyi keystone',     tree:'Precision', key:true},
+      {img:'styles/precision/triumph/triumph.png',                 n:'Triumph',          w:'Kill sonrası HP, teamfight reset',                        tree:'Precision'},
+      {img:'styles/precision/legendalacrity/legendalacrity.png',   n:'Legend: Alacrity', w:'AS — Q\'nun 3. vuruşu daha hızlı gelir',                 tree:'Precision'},
+      {img:'styles/precision/coupdegrace/coupdegrace.png',         n:'Coup de Grace',    w:'Düşük HP\'de kill güvencesi',                             tree:'Precision'},
+      {img:'styles/inspiration/cosmicinsight/cosmicinsight.png',   n:'Cosmic Insight',   w:'Item ve summoner spell CD azalımı',                       tree:'Inspiration'},
+      {img:'styles/inspiration/magicalfootwear/magicalfootwear.png',n:'Magical Footwear','w':'Ücretsiz boots — 300 gold kazanımı',                    tree:'Inspiration'},
+    ],
+    items: [
+      {ph:'Başlangıç', its:[
+        {img:'1102.png', n:'Gustwalker Hatchling', tip:'Blue start için'},
+        {img:'2031.png', n:'Refillable Potion'},
+      ]},
+      {ph:'Mythic (en yüksek WR)', its:[
+        {img:'3748.png', n:'Titanic Hydra',  tip:'S+ tier — tank + hasar'},
+        {img:'6333.png', n:'Death\'s Dance', tip:'Survival build'},
+      ]},
+      {ph:'Ayakkabı', its:[
+        {img:'3047.png', n:'Plated Steelcaps'},
+      ]},
+      {ph:'Core', its:[
+        {img:'3071.png', n:'Black Cleaver'},
+        {img:'3053.png', n:'Sterak\'s Gage'},
+        {img:'3748.png', n:'Ravenous Hydra', tip:'Lifesteal için alternatif'},
+      ]},
+    ],
+    tl: [
+      {t:'0:00 — Başlangıç (Kırmızı Taraf)', x:'Red Brambleback → Raptors → Krugs → Blue Sentinel → Gromp → Wolves. Level 3\'te W+E+Q açılınca scuttle fight.'},
+      {t:'0:00 — Başlangıç (Mavi Taraf)',    x:'Blue Sentinel → Gromp → Wolves → Red Brambleback → Raptors → Krugs. Level 3\'te scuttle fight.'},
+      {t:'3:00-5:00 — Level 3 Gank',         x:'E ile mark yap, W ile slow uygula, Q ile 3. vuruşta knock-up. Bot gank çok güçlü.'},
+      {t:'5:00-12:00 — Objektifler',          x:'Dragon her spawn\'da al — Xin Zhao çok hızlı öldürür. Rift Herald\'ı erkenden al, mid tower bas.'},
+      {t:'12:00+ — Teamfight',                x:'E ile priority target\'a atla, Q knock-up, R ile squishi\'leri ayır. Tank\'a R atma.'},
+    ],
+    wc: [
+      'E ile carry\'e atla, Q knock-up, R ile izole et',
+      'Dragon ve Herald first priority — obje makinesisın',
+      'Erken agresif gank ile bot/mid/top\'a baskı',
+      'Teamfight\'ta R ile ADC veya mid\'i takımdan ayır',
+    ],
+    do:   ['Her zaman önce E ile mark yap', 'Dragon spawn\'larında mutlaka hazır ol', 'R\'yi carry\'e at, tank\'a değil'],
+    dont: ['Tank\'a R atma, squishi hedefle', 'Gank\'ta bekleyip overfarming', 'Scuttle\'ı atlama, erken kontrol kritik'],
+  },
+
+  'Viego': {
+    tags: ['carry','assassin','dive'],
+    skillOrder: 'Q → E → W (önce max)',
+    runes: [
+      {img:'styles/precision/conqueror/conqueror.png',             n:'Conqueror',        w:'Possession sırasında stack — daha uzun fight ve hasar',  tree:'Precision', key:true},
+      {img:'styles/precision/triumph/triumph.png',                 n:'Triumph',          w:'Kill ve possession sonrası HP — reset zinciri sağlıklı', tree:'Precision'},
+      {img:'styles/precision/legendalacrity/legendalacrity.png',   n:'Legend: Alacrity', w:'AS — possession sırasında daha hızlı hasar',             tree:'Precision'},
+      {img:'styles/precision/coupdegrace/coupdegrace.png',         n:'Coup de Grace',    w:'Kill güvencesi',                                         tree:'Precision'},
+      {img:'styles/inspiration/cosmicinsight/cosmicinsight.png',   n:'Cosmic Insight',   w:'Item CD azalımı',                                        tree:'Inspiration'},
+      {img:'styles/inspiration/magicalfootwear/magicalfootwear.png',n:'Magical Footwear','w':'Ücretsiz boots — erken gold avantajı',                 tree:'Inspiration'},
+    ],
+    items: [
+      {ph:'Başlangıç', its:[
+        {img:'1102.png', n:'Gustwalker Hatchling'},
+        {img:'2031.png', n:'Refillable Potion'},
+      ]},
+      {ph:'Mythic (en yüksek WR)', its:[
+        {img:'6672.png', n:'Kraken Slayer',         tip:'S+ tier'},
+        {img:'3153.png', n:'Blade of the Ruined King', tip:'Lifesteal + AS build'},
+      ]},
+      {ph:'Ayakkabı', its:[
+        {img:'3047.png', n:'Plated Steelcaps'},
+      ]},
+      {ph:'Core', its:[
+        {img:'7004.png', n:'The Collector'},
+        {img:'6033.png', n:'Immortal Shieldbow'},
+        {img:'3036.png', n:'Lord Dominik\'s Regards'},
+      ]},
+    ],
+    tl: [
+      {t:'0:00 — Başlangıç (Kırmızı Taraf)', x:'Red Brambleback → Raptors → Krugs → Blue Sentinel → Gromp → Wolves. Viego early zayıf, level 5-6\'ya kadar mümkünse farm yap.'},
+      {t:'0:00 — Başlangıç (Mavi Taraf)',    x:'Blue Sentinel → Gromp → Wolves → Red Brambleback → Raptors → Krugs. Level 5-6\'ya kadar farm ağırlıklı.'},
+      {t:'5:00-8:00 — İlk Gank',             x:'W ile stealth giriş, Q stack yap, kill al, possession al, reset. Bot veya mid\'e ilk gank.'},
+      {t:'8:00-18:00 — Snowball',            x:'Possession reset çok güçlü. Dragon ve Herald\'a katıl. Teamfight\'ta bekle, biri ölsün, possess et.'},
+      {t:'18:00+ — Win Condition',           x:'Carry possess et — kendi ability\'lerini kullan. ADC veya mid steali ile oyun biter.'},
+    ],
+    wc: [
+      'Güçlü carry possess et, oyun değiştir',
+      'W ile stealth giriş — sürpriz gank her zaman',
+      'Reset zinciri: kill → possess → kill → possess',
+      'Carry steal ile rakip win condition\'ı boz',
+    ],
+    do:   ['W ile stealth girerek sürpriz gank', 'En güçlü şampiyonu possession hedefle', 'Possession için bekle, acele etme'],
+    dont: ['Erken invade — early çok zayıfsın', 'Tank possess etme, squishi hedefle', 'Possession olmadan uzun fight alma'],
+  },
+
+  'Jarvan IV': {
+    tags: ['engage','tank','cc'],
+    skillOrder: 'Q → E → W (önce max)',
+    runes: [
+      {img:'styles/precision/conqueror/conqueror.png',             n:'Conqueror',        w:'Tank build\'de bile hasar — en iyi keystone J4 için',  tree:'Precision', key:true},
+      {img:'styles/precision/triumph/triumph.png',                 n:'Triumph',          w:'Fight ortasında HP kazanımı',                          tree:'Precision'},
+      {img:'styles/precision/legendalacrity/legendalacrity.png',   n:'Legend: Alacrity', w:'AS — Q reset döngüsü',                                tree:'Precision'},
+      {img:'styles/precision/coupdegrace/coupdegrace.png',         n:'Coup de Grace',    w:'Kill güvencesi',                                       tree:'Precision'},
+      {img:'styles/inspiration/cosmicinsight/cosmicinsight.png',   n:'Cosmic Insight',   w:'Item ve Flash CD azalımı',                             tree:'Inspiration'},
+      {img:'styles/inspiration/magicalfootwear/magicalfootwear.png',n:'Magical Footwear','w':'Ücretsiz boots — erken gold avantajı',               tree:'Inspiration'},
+    ],
+    items: [
+      {ph:'Başlangıç', its:[
+        {img:'1103.png', n:'Scorchclaw Pup'},
+        {img:'2031.png', n:'Refillable Potion'},
+      ]},
+      {ph:'Mythic (en yüksek WR)', its:[
+        {img:'6632.png', n:'Sundered Sky',  tip:'S+ tier — tank + hasar'},
+        {img:'3068.png', n:'Sunfire Aegis', tip:'Full tank build'},
+      ]},
+      {ph:'Ayakkabı', its:[
+        {img:'3047.png', n:'Plated Steelcaps'},
+      ]},
+      {ph:'Core', its:[
+        {img:'3071.png', n:'Black Cleaver'},
+        {img:'3026.png', n:'Guardian Angel'},
+        {img:'3110.png', n:'Frozen Heart', tip:'Armor + mana + AS yavaşlatma'},
+      ]},
+    ],
+    tl: [
+      {t:'0:00 — Başlangıç (Kırmızı Taraf)', x:'Red Brambleback → Raptors → Krugs → Blue Sentinel → Gromp → Wolves. Level 2\'de Q+E açılınca bot gank mümkün.'},
+      {t:'0:00 — Başlangıç (Mavi Taraf)',    x:'Blue Sentinel → Gromp → Wolves → Red Brambleback → Raptors → Krugs. Level 2 gank için bot\'a bak.'},
+      {t:'2:30-5:00 — Level 2 Gank',         x:'J4\'ün en güçlü anı! E (flag) → Q (flag\'e atla) → knock-up. Rakip flash çekse bile yeter.'},
+      {t:'5:00-12:00 — Objektifler',          x:'Dragon ve Herald için çok güçlüsün. Scuttle kontrol. Mid priority varsa Herald al, tower bas.'},
+      {t:'12:00+ — Engage Makinesi',          x:'Teamfight\'ta E flag at → Q dal → R ile squishi izole et. Sen engage makinesisın, peel değil.'},
+    ],
+    wc: [
+      'EQ combo ile gank, R ile squishi izole et',
+      'Herald ile erken tower, map kontrolü',
+      'Agresif engage açmaya devam et',
+      'Vision — enemy JG nerede bil, counter gank yap',
+    ],
+    do:   ['EQ combo: E flag koy, Q ile dal', 'R\'yi carry\'e at tank\'a değil', 'Level 2 bot gank — en güçlü anın'],
+    dont: ['Sylas\'a R ATMA — ult çalar!', 'R\'yi tanklara harcama', 'Solo fight — engage sonrası takım takip etmezse geri çekil'],
+  },
+};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let profile = { role:'top', mains:[null,null,null,null,null] };
+let draft = {
+  blue: {top:null,jg:null,mid:null,bot:null,sup:null},
+  red:  {top:null,jg:null,mid:null,bot:null,sup:null}
+};
+let selectedPick = null;
+let srchCtx = null, srchHL = 0;
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function gc(n) { return CHAMPS.find(c=>c.n===n); }
+function norm(s) { return s.toLowerCase().replace(/[\s'\u2019\u02bc]/g,''); }
+
+function champColor(n) {
+  let h=0; for(let i=0;i<n.length;i++) h=(h*31+n.charCodeAt(i))&0xFFFFFF;
+  return `hsl(${h%360},50%,30%)`;
+}
+
+// Render portrait: try CDN img, fallback to colored initials
+function portrait(name, cls, w=36, h=36) {
+  if (!name) return '';
+  const src = champImg(name);
+  const ini = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const col = champColor(name);
+  const uid = 'p'+Math.random().toString(36).slice(2,8);
+  return `<span style="display:inline-flex;width:${w}px;height:${h}px;border-radius:50%;overflow:hidden;flex-shrink:0;position:relative;" class="${cls}">
+    <img id="${uid}i" src="${src}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:50%;" 
+         onload="document.getElementById('${uid}f').style.display='none'" 
+         onerror="this.style.display='none'">
+    <span id="${uid}f" style="position:absolute;inset:0;background:${col};display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:${Math.round(w*0.33)}px;font-weight:700;color:rgba(255,255,255,.85);">${ini}</span>
+  </span>`;
+}
+
+// Render rune img with fallback emoji
+function runeImg(imgPath, fallbackEmoji='🏅') {
+  if (!imgPath) return `<span class="rune-fallback">${fallbackEmoji}</span>`;
+  const src = DD_RUNE + imgPath;
+  return `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span class="rune-fallback" style="display:none;">${fallbackEmoji}</span>`;
+}
+
+// Render item img with fallback initials
+function itemImg(imgFile, name) {
+  if (!imgFile) return `<div class="item-fallback">${(name||'?').slice(0,2)}</div>`;
+  const src = DD_ITEM + imgFile;
+  return `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><div class="item-fallback" style="display:none;">${(name||'?').slice(0,2)}</div>`;
+}
+
+function getTags(obj) {
+  const t={};
+  Object.values(obj).filter(Boolean).forEach(n=>{
+    const c=gc(n); if(c) Object.keys(c.t).forEach(k=>{t[k]=(t[k]||0)+1;});
+  });
+  return t;
+}
+
+// ═══════════════════════════════════════════════════════
+// STEP NAVIGATION
+// ═══════════════════════════════════════════════════════
+function goStep(n) {
+  if (n===2 && profile.mains.filter(Boolean).length===0) return;
+  [1,2,3].forEach(i=>{
+    document.getElementById('page'+i).classList.toggle('active', i===n);
+    const si = document.getElementById('si'+i);
+    if (!si) return;
+    si.classList.remove('active','done');
+    if (i===n) si.classList.add('active');
+    else if (i<n) si.classList.add('done');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════════════════════
+// PAGE 1 — PROFILE
+// ═══════════════════════════════════════════════════════
+function selRole(r) {
+  profile.role = r;
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.toggle('sel', b.dataset.role===r));
+  const rl={jg:'Orman',top:'Üst Şerit',mid:'Orta Şerit',bot:'Bot Şerit',sup:'Destek'};
+  document.getElementById('mainsLbl').textContent = rl[r]+' Mainlerin (max 5)';
+}
+
+function buildMainsGrid() {
+  const g = document.getElementById('mainsGrid');
+  g.innerHTML = '';
+  for (let i=0; i<5; i++) {
+    const name = profile.mains[i];
+    const d = document.createElement('div');
+    d.className = 'main-slot' + (name?' filled':'');
+    d.id = 'ms'+i;
+    if (name) {
+      d.innerHTML = `<div class="slot-n">${i+1}</div>
+        ${portrait(name,'champ-img',52,52)}
+        <div class="champ-name-s">${name}</div>
+        <div class="clr-btn" onclick="clrMain(event,${i})">✕</div>`;
+    } else {
+      d.innerHTML = `<div class="slot-n">${i+1}</div><div class="add-plus">＋</div>`;
+    }
+    d.onclick = ()=>{ if(!name) openSrch('main',i,'','Main Şampiyon Seç'); };
+    g.appendChild(d);
+  }
+  document.getElementById('toStep2').disabled = profile.mains.filter(Boolean).length===0;
+}
+
+function clrMain(e, i) {
+  e.stopPropagation();
+  profile.mains[i]=null;
+  buildMainsGrid();
+}
+
+// ═══════════════════════════════════════════════════════
+// PAGE 2 — DRAFT
+// ═══════════════════════════════════════════════════════
+function buildDraftBoard() {
+  buildSide('blueSlots','blue');
+  buildSide('redSlots','red');
+}
+
+function buildSide(cid, side) {
+  const c = document.getElementById(cid);
+  c.innerHTML='';
+  ROLES.forEach(r=>{
+    const val = draft[side][r.k];
+    const isJG = side==='blue' && r.k==='jg';
+    const isSel = isJG && selectedPick && val===selectedPick;
+    const d = document.createElement('div');
+    d.className = 'dslot'+(val?' filled':'')+(isJG&&!val?' mine-hl':'')+(isSel?' mine-sel':'');
+    d.id = 'ds-'+side+'-'+r.k;
+
+    const roleE = `<div class="dslot-role">${r.e}</div>`;
+    const portE = val ? portrait(val,'dslot-img',30,30) : '';
+    const nameE = val
+      ? `<div class="dslot-name">${val}</div>`
+      : `<div class="dslot-name"><span class="dslot-ph">${isJG?'Sen (JG)':r.l}</span></div>`;
+    const clrE = val ? `<div class="dslot-clr" onclick="clrSlot(event,'${side}','${r.k}')">✕</div>` : '';
+
+    d.innerHTML = roleE+portE+nameE+clrE;
+    d.onclick = ()=>openSrch('draft',{side,rk:r.k},r.e,r.l+(isJG?' — Kendi Pickini Seç':''));
+    c.appendChild(d);
+  });
+}
+
+function clrSlot(e, side, rk) {
+  e.stopPropagation();
+  draft[side][rk]=null;
+  if (side==='blue'&&rk==='jg'&&selectedPick) { selectedPick=null; updatePhaseUI(); }
+  buildSide(side==='blue'?'blueSlots':'redSlots', side);
+}
+
+function clearDraft() {
+  draft={blue:{top:null,jg:null,mid:null,bot:null,sup:null},red:{top:null,jg:null,mid:null,bot:null,sup:null}};
+  selectedPick=null;
+  buildDraftBoard();
+  document.getElementById('pickReco').classList.remove('visible');
+  updatePhaseUI();
+}
+
+function updatePhaseUI() {
+  const pi = document.getElementById('phaseInfo');
+  const gb = document.getElementById('guideBtn');
+  if (selectedPick) {
+    pi.classList.add('visible');
+    document.getElementById('phasePickName').textContent=selectedPick;
+    gb.style.display='block';
+  } else {
+    pi.classList.remove('visible');
+    gb.style.display='none';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// ANALYSIS ENGINE
+// ═══════════════════════════════════════════════════════
+function computeScores() {
+  const mains = profile.mains.filter(Boolean);
+  const et = getTags(draft.red);
+  const mt = getTags(draft.blue);
+  const redJG = draft.red.jg;
+  const stdIdx = ['Nocturne','Graves','Xin Zhao','Viego','Jarvan IV'];
+  const redAll = Object.values(draft.red).filter(Boolean);
+
+  return mains.map(name=>{
+    let sc = 65;
+
+    // JG matchup
+    if (redJG && JG_VS[redJG]) {
+      const row = JG_VS[redJG];
+      const i = stdIdx.indexOf(name);
+      sc += (i>=0) ? row[i] : 70;
+    } else sc+=70;
+
+    // Tag bonuses
+    const i = stdIdx.indexOf(name);
+    if (i>=0) {
+      Object.entries(et).forEach(([t,cnt])=>{ if(TV[t]) sc+=TV[t][i]*cnt; });
+      Object.entries(mt).forEach(([t,cnt])=>{ if(TW[t]) sc+=TW[t][i]*cnt; });
+    }
+
+    // ── ENEMY SIDE LOGIC ──────────────────────────
+    // Sylas steals ult
+    if (name==='Jarvan IV' && redAll.includes('Sylas')) sc -= 10;
+    // Big ult champs — Nocturne can dive through them
+    if (name==='Nocturne' && redAll.some(n=>{const c=gc(n);return c&&c.t.bigUlt;})) sc += 5;
+    // Viego vs Shyvana — steal dragon form
+    if (name==='Viego' && redAll.includes('Shyvana')) sc += 10;
+    // Diana vs engage heavy
+    if (name==='Diana' && et.engage>=2) sc += 7;
+
+    // ── MY TEAM COMPOSITION LOGIC ────────────────
+    const blueAll = Object.values(draft.blue).filter(Boolean);
+    const adChamps = ['Aatrox','Darius','Fiora','Garen','Irelia','Jax','Riven','Tryndamere',
+      'Yasuo','Yone','Zed','Talon','Rengar','Master Yi','Trundle','Olaf','Xayah',
+      'Jinx','Caitlyn','Draven','Vayne','Miss Fortune','Samira','Tristana','Lucian',
+      'Graves','Nocturne','Viego','Jarvan IV','Wukong','Vi','Hecarim','Udyr'];
+    const apChamps = ['Ahri','Akali','Annie','Azir','Cassiopeia','Diana','Ekko','Elise',
+      'Fizz','Karthus','Kassadin','Katarina','LeBlanc','Lissandra','Lux','Malzahar',
+      'Orianna','Ryze','Syndra','Viktor','Vladimir','Zoe','Zyra','Brand','Seraphine',
+      'Hwei','Vex','Aurelion Sol','Lillia','Neeko','Taliyah','Rumble','Kennen'];
+
+    const myTeamAD = blueAll.filter(n => adChamps.includes(n)).length;
+    const myTeamAP = blueAll.filter(n => apChamps.includes(n)).length;
+    const hasYasuoYone = blueAll.some(n=>n==='Yasuo'||n==='Yone');
+    const teamHasEngage = blueAll.some(n=>{const c=gc(n);return c&&c.t.engage;});
+    const myPokeCount = blueAll.filter(n=>{const c=gc(n);return c&&c.t.poke;}).length;
+    const mySplitCount = blueAll.filter(n=>{const c=gc(n);return c&&c.t.split;}).length;
+
+    // AD heavy team → Diana gets big bonus (AP balance)
+    if (name==='Diana' && myTeamAD >= 2) sc += 15;
+    if (name==='Diana' && myTeamAD >= 3) sc += 10;
+
+    // AP heavy team → Graves/Nocturne bonus (AD balance)
+    if ((name==='Graves'||name==='Nocturne') && myTeamAP >= 2) sc += 12;
+    if ((name==='Graves'||name==='Nocturne') && myTeamAP >= 3) sc += 8;
+
+    // Yasuo/Yone synergy — Diana R triggers Yasuo R, huge combo
+    if (hasYasuoYone && name==='Diana')     sc += 20;
+    if (hasYasuoYone && name==='Jarvan IV') sc += 12;
+    if (hasYasuoYone && name==='Viego')     sc -= 5;
+
+    // No engage in team → Jarvan IV and Diana much more valuable
+    if (!teamHasEngage && blueAll.length >= 2 && name==='Jarvan IV') sc += 14;
+    if (!teamHasEngage && blueAll.length >= 2 && name==='Diana')     sc += 8;
+
+    // Engage heavy team → Jarvan IV and Diana scale
+    if (blueAll.filter(n=>{const c=gc(n);return c&&c.t.engage;}).length >= 2 && name==='Jarvan IV') sc += 10;
+
+    // Poke team → dive JG to close gaps
+    if (myPokeCount >= 2 && name==='Nocturne') sc += 8;
+    if (myPokeCount >= 2 && name==='Diana')    sc += 6;
+
+    // Split push team → solo carry JG
+    if (mySplitCount >= 2 && name==='Viego') sc += 8;
+    if (mySplitCount >= 2 && name==='Graves') sc += 6;
+
+    return {name, sc};
+  }).sort((a,b)=>b.sc-a.sc);
+}
+
+function badgeInfo(sc, max) {
+  const p = sc/max;
+  if (p>.94) return ['bs','S'];
+  if (p>.87) return ['ba','A'];
+  if (p>.79) return ['bb','B'];
+  return ['bc','C'];
+}
+
+function pickReason(name, rank, redAll, redJG, et, mt) {
+  const parts=[];
+  if (redJG && JG_VS[redJG]) {
+    const idx=['Nocturne','Graves','Xin Zhao','Viego','Jarvan IV'].indexOf(name);
+    const s = idx>=0 ? JG_VS[redJG][idx] : 70;
+    if (s>=80) parts.push(`${redJG}'a karşı avantajlı matchup`);
+    else if (s<65) parts.push(`${redJG}'a karşı dikkatli ol`);
+  }
+  if (name==='Nocturne') {
+    if (et.poke>=2) parts.push('Poke backline\'a ult ile dal');
+    if (redAll.includes('Blitzcrank')) parts.push('Blitz hook\'undan ult ile kaç, backline\'a uç');
+    if (redAll.some(n=>{const c=gc(n);return c&&c.t.bigUlt;})) parts.push('Rakipte büyük ult var — dive ile boz');
+  }
+  if (name==='Jarvan IV') {
+    if (redAll.includes('Sylas')) parts.push('⚠️ Sylas\'a R ATMA — ult çalar!');
+    else if (et.assassin>=2) parts.push('Cage ile assassin\'leri hapset');
+    if (mt.engage>=1) parts.push('Takım engage\'iyle mükemmel sinerji');
+  }
+  if (name==='Graves' && et.tank>=2) parts.push('Tank ağır compta lethality ile eridir');
+  if (name==='Xin Zhao' && et.assassin>=2) parts.push('CC ile assassin\'leri durdur');
+  if (name==='Viego') {
+    if (redAll.includes('Shyvana')) parts.push('Shyvana possess — dragon formu çal!');
+    if (et.carry>=2) parts.push('Güçlü carry steal potansiyeli');
+  }
+  // Team composition reasons
+  const blueAllR = Object.values(draft.blue).filter(Boolean);
+  const adChampsR = ['Aatrox','Darius','Fiora','Garen','Irelia','Jax','Riven','Tryndamere','Yasuo','Yone','Zed','Talon','Rengar','Graves','Master Yi','Trundle','Olaf','Xayah','Jinx','Caitlyn','Draven','Vayne','Miss Fortune','Samira','Tristana'];
+  const myADR = blueAllR.filter(n=>adChampsR.includes(n)).length;
+  const hasYY  = blueAllR.some(n=>n==='Yasuo'||n==='Yone');
+  const noEng  = blueAllR.length>=2 && !blueAllR.some(n=>{const c=gc(n);return c&&c.t.engage;});
+
+  if (name==='Diana' && myADR>=2) parts.push('Takımda '+myADR+' AD var — AP denge için Diana şart');
+  if (name==='Diana' && hasYY) parts.push('Yasuo/Yone var — Diana R combo devasa!');
+  if ((name==='Graves'||name==='Nocturne') && blueAllR.filter(n=>['Ahri','Akali','Diana','Lux','Syndra','Viktor','Orianna','Katarina','LeBlanc','Zoe'].includes(n)).length>=2)
+    parts.push('Takımda AP ağır — AD JG ile denge kur');
+  if (name==='Jarvan IV' && noEng) parts.push('Takımda engage yok — J4 şart!');
+  if (name==='Jarvan IV' && hasYY) parts.push('Yasuo/Yone var — EQ knockup combo güçlü');
+
+  if (!parts.length) parts.push(rank===0?'Bu draft için en güvenli seçim':'Dengeli alternatif');
+  return parts.slice(0,2).join(' · ');
+}
+
+function doAnalyze() {
+  const mains = profile.mains.filter(Boolean);
+  if (!mains.length) { goStep(1); return; }
+
+  const ranked = computeScores();
+  const max = ranked[0].sc;
+  const et = getTags(draft.red), mt = getTags(draft.blue);
+  const redAll = Object.values(draft.red).filter(Boolean);
+  const redJG = draft.red.jg;
+  const rCls = ['r1','r2','r3','',''];
+
+  document.getElementById('pickRow').innerHTML = ranked.map((p,i)=>{
+    const [bc,bl] = badgeInfo(p.sc, max);
+    const reason = pickReason(p.name, i, redAll, redJG, et, mt);
+    const hasG = !!GUIDES[p.name];
+    const isChosen = selectedPick===p.name;
+    return `<div class="pcard ${rCls[i]||''} ${isChosen?'chosen':''}" onclick="selectPick('${p.name}')">
+      <div class="pcard-rank">#${i+1}</div>
+      <div class="pcard-badge ${bc}">${bl}</div>
+      ${portrait(p.name,'',56,56).replace('display:inline-flex','display:flex;margin:18px auto 8px').replace(/class=""/,'')}
+      <div class="pcard-name">${p.name}</div>
+      <div class="pcard-reason">${reason}</div>
+      ${hasG?'<div class="pcard-cta">SEÇ → REHBER ↗</div>':''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('pickReco').classList.add('visible');
+  setTimeout(()=>document.getElementById('pickReco').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+function selectPick(name) {
+  selectedPick = name;
+  draft.blue.jg = name;
+  buildSide('blueSlots','blue');
+  document.querySelectorAll('.pcard').forEach(c=>{
+    c.classList.toggle('chosen', c.querySelector('.pcard-name')?.textContent===name);
+  });
+  updatePhaseUI();
+}
+
+function openGuide() {
+  if (!selectedPick) return;
+  renderGuide();
+  goStep(3);
+}
+
+// ═══════════════════════════════════════════════════════
+// PAGE 3 — GUIDE RENDERER
+// ═══════════════════════════════════════════════════════
+function renderGuide() {
+  const name = selectedPick;
+  const g = GUIDES[name];
+  const redJG = draft.red.jg;
+  const et = getTags(draft.red), mt = getTags(draft.blue);
+  const redAll = Object.values(draft.red).filter(Boolean);
+  const blueAll = Object.values(draft.blue).filter(Boolean);
+  const tLbl = {assassin:'Assassin',carry:'Carry',engage:'Engage',tank:'Tank',poke:'Poke',cc:'CC',dive:'Dive'};
+
+  // Pill tags
+  function pills() {
+    const p=[];
+    if(et.engage>=2) p.push('<span class="pill pill-e">Rakip Engage Ağır</span>');
+    if(et.poke>=2)   p.push('<span class="pill pill-p">Rakip Poke Ağır</span>');
+    if(et.tank>=2)   p.push('<span class="pill pill-t">Rakip Tank Ağır</span>');
+    if(et.assassin>=2) p.push('<span class="pill pill-a">Rakip Assassin Ağır</span>');
+    if(et.carry>=3)  p.push('<span class="pill pill-c">Rakip Carry Ağır</span>');
+    if(mt.engage>=2) p.push('<span class="pill pill-t">✅ Takımın Engage</span>');
+    if(mt.carry>=2)  p.push('<span class="pill pill-c">✅ Takımın Carry</span>');
+    return p.join('');
+  }
+
+  // Summary
+  function summary() {
+    let s = `<b>${name}</b> bu draft için seçildi. `;
+    if (redJG && JG_VS[redJG]) {
+      const idx=['Nocturne','Graves','Xin Zhao','Viego','Jarvan IV'].indexOf(name);
+      const sc = idx>=0 ? JG_VS[redJG][idx] : 70;
+      if (sc>=80) s+=`Rakip JG <b>${redJG}</b>'a karşı avantajlısın. `;
+      else if (sc<65) s+=`Rakip JG <b>${redJG}</b>'a karşı dikkatli ol. `;
+      else s+=`Rakip JG <b>${redJG}</b>'a karşı dengeli matchup. `;
+    }
+    if (redAll.includes('Blitzcrank')&&redAll.includes('Miss Fortune'))
+      s+='<b>Blitzcrank+MF</b> bot lane var — hook+Bullet Time combo çok tehlikeli, pozisyon kritik. ';
+    if (redAll.includes('Sylas')&&name==='Jarvan IV')
+      s+='<b>⚠️ Sylas\'a kesinlikle R atma!</b> ';
+    if (name==='Viego'&&redAll.includes('Shyvana'))
+      s+='<b>Shyvana</b> var — possess edince dragon formu çalabilirsin, oyun biter! ';
+    if (et.engage>=3) s+='Rakip heavy engage oynuyor, <b>doğru pozisyon ve vision kritik</b>. ';
+    if (et.poke>=2)   s+='Poke ağır rakip — <b>engage ile kapat</b>. ';
+    if (et.tank>=2)   s+='Çok tank var — <b>anti-tank item</b> düşün. ';
+    return s;
+  }
+
+  if (!g) {
+    document.getElementById('guideContent').innerHTML = `
+      <div class="guide-hero">
+        ${portrait(name,'hero-portrait',80,80)}
+        <div class="hero-info">
+          <div class="hero-lbl">Seçilen Pick</div>
+          <div class="hero-name">${name}</div>
+        </div>
+      </div>
+      <div class="summary-box">${summary()}<br><br><b>${name}</b> için detaylı rehber yakında eklenecek.</div>`;
+    return;
+  }
+
+  document.getElementById('guideContent').innerHTML = `
+    <div class="guide-hero">
+      ${portrait(name,'hero-portrait',80,80)}
+      <div class="hero-info">
+        <div class="hero-lbl">Seçilen Pick</div>
+        <div class="hero-name">${name}</div>
+        <div class="hero-tags">${g.tags.map(t=>`<span class="htag htag-${t}">${tLbl[t]||t}</span>`).join('')}</div>
+        ${g.skillOrder?`<div class="hero-skill">Skill Sırası: <b>${g.skillOrder}</b></div>`:''}
+      </div>
+      ${redJG?`<div class="hero-vs">
+        <div class="hero-vs-lbl">Rakip JG</div>
+        <div class="hero-vs-row">
+          ${portrait(redJG,'hero-vs-img',34,34)}
+          <span class="hero-vs-name">${redJG}</span>
+        </div>
+      </div>`:''}
+    </div>
+
+    ${pills()?`<div class="pills">${pills()}</div>`:''}
+    <div class="summary-box">${summary()}</div>
+
+    <div class="guide-grid">
+      <div class="gsec">
+        <div class="gsec-hdr"><div class="gsec-icon">🏅</div><div class="gsec-title">Runlar</div></div>
+        <div class="gsec-body">
+          ${g.runes.map(r=>`
+            <div class="rune-row">
+              <div class="rune-img-wrap">${runeImg(r.img)}</div>
+              <div class="rune-info">
+                <div class="rune-name">${r.n}${r.key?'<span class="rune-ana">ANA</span>':''}</div>
+                <div class="rune-why">${r.w}</div>
+              </div>
+              <div class="rune-tree">${r.tree}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="gsec">
+        <div class="gsec-hdr"><div class="gsec-icon">⚔️</div><div class="gsec-title">Eşyalar</div></div>
+        <div class="gsec-body">
+          ${g.items.map(ph=>`
+            <div class="item-phase">
+              <div class="item-phase-lbl">${ph.ph}</div>
+              <div class="items-row">
+                ${ph.its.map(it=>`
+                  <div class="ichip">
+                    <div class="item-img-wrap">${itemImg(it.img, it.n)}</div>
+                    <div class="item-text">
+                      <div class="item-name">${it.n}</div>
+                      ${it.tip?`<div class="item-tip">${it.tip}</div>`:''}
+                    </div>
+                  </div>`).join('')}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-grid">
+      <div class="gsec">
+        <div class="gsec-hdr"><div class="gsec-icon">🏆</div><div class="gsec-title">Kazanma Koşulları</div></div>
+        <div class="gsec-body">
+          <div class="wc-list">
+            ${g.wc.map((w,i)=>`
+              <div class="wc-item">
+                <div class="wc-num">${i+1}</div>
+                <div class="wc-text">${w}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="gsec">
+        <div class="gsec-hdr"><div class="gsec-icon">⚡</div><div class="gsec-title">Matchup İpuçları</div></div>
+        <div class="gsec-body">
+          <div class="matchup-grid">
+            <div class="mside do">
+              <div class="mside-title">YAP</div>
+              ${g.do.map(t=>`<div class="mtip">${t}</div>`).join('')}
+            </div>
+            <div class="mside dont">
+              <div class="mside-title">YAPMA</div>
+              ${g.dont.map(t=>`<div class="mtip">${t}</div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gsec span2" style="margin-bottom:0">
+      <div class="gsec-hdr"><div class="gsec-icon">⏱️</div><div class="gsec-title">Maç İçi Zaman Çizelgesi</div></div>
+      <div class="gsec-body">
+        <div class="tl">
+          ${g.tl.map(tl=>`
+            <div class="tl-item">
+              <div class="tl-aside">
+                <div class="tl-dot"></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-body">
+                <div class="tl-time">${tl.t}</div>
+                <div class="tl-text">${tl.x}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════
+// SEARCH MODAL
+// ═══════════════════════════════════════════════════════
+function openSrch(type, ctx, emoji, label) {
+  srchCtx={type,ctx}; srchHL=0;
+  const icon = document.getElementById('smIcon');
+  if (ctx && typeof ctx==='string' && gc(ctx)) {
+    icon.innerHTML = portrait(ctx,'sm-hdr-icon',34,34);
+  } else {
+    icon.innerHTML = `<div class="sm-hdr-avatar">${emoji||'⚔️'}</div>`;
+  }
+  document.getElementById('smLbl').textContent = label;
+  document.getElementById('sInput').value = '';
+  filterS();
+  document.getElementById('sOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('sInput').focus(), 60);
+}
+
+function closeSrch(e) {
+  document.getElementById('sOverlay').classList.remove('open');
+  srchCtx=null;
+}
+
+function filterS() {
+  const q = norm(document.getElementById('sInput').value);
+  const res = document.getElementById('sResults');
+  const fil = CHAMPS.filter(c=>norm(c.n).includes(q)).slice(0,14);
+  if (!fil.length) { res.innerHTML='<div class="sm-nores">Şampiyon bulunamadı</div>'; return; }
+  res.innerHTML = fil.map((c,i)=>`
+    <div class="sm-item ${i===srchHL?'hl':''}" onclick="pickChamp('${c.n.replace(/'/g,"\\'")}')">
+      ${portrait(c.n,'sm-item-img',36,36)}
+      <div class="sm-item-name">${c.n}</div>
+    </div>`).join('');
+}
+
+function keyS(e) {
+  const q = norm(document.getElementById('sInput').value);
+  const fil = CHAMPS.filter(c=>norm(c.n).includes(q));
+  if (e.key==='ArrowDown') { srchHL=Math.min(srchHL+1,Math.min(fil.length,14)-1); filterS(); }
+  else if (e.key==='ArrowUp') { srchHL=Math.max(srchHL-1,0); filterS(); }
+  else if (e.key==='Enter' && fil[srchHL]) pickChamp(fil[srchHL].n);
+  else if (e.key==='Escape') closeSrch();
+}
+
+function pickChamp(name) {
+  if (!srchCtx) return;
+  const {type,ctx} = srchCtx;
+  if (type==='main') {
+    profile.mains[ctx]=name;
+    buildMainsGrid();
+  } else {
+    draft[ctx.side][ctx.rk]=name;
+    buildSide(ctx.side==='blue'?'blueSlots':'redSlots', ctx.side);
+  }
+  closeSrch();
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+buildMainsGrid();
+buildDraftBoard();
+
+</script>
+</body>
+</html>
